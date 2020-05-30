@@ -48,10 +48,18 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 // todo dynamic load / import by readdir and async import
-import character from "./api/v1/characters"
-app.use(character)
-import ratings from "./api/v1/rating"
-app.use(ratings)
+// import character from "./api/v1/characters"
+// app.use(character)
+// import ratings from "./api/v1/rating"
+// app.use(ratings)
+
+import glob from "glob"
+import { resolve } from "path"
+
+glob.sync(resolve(__dirname, "api", "v1", "*.ts")).forEach(n => {
+  console.log(`Adding handler from ${n}`)
+  app.use(require(n)["default"])
+})
 
 app.get('/auth/bnet', passport.authenticate('bnet'));
 
