@@ -67,7 +67,7 @@ app.get("/api/v1/profile", function(req, res) {
     }
 })
 
-app.use(express.static(path.resolve(__dirname, "..", "client", "public")))
+app.use(express.static(path.resolve(__dirname, "..", "..", "client", "public")))
 
 app.get('/logout', function(req, res) {
   req.logout();
