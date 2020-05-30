@@ -1,22 +1,42 @@
-import "./components/match-statistik.js"
+import "./components/statistic-cell.js"
 import "./components/bracket-2v2.js"
 import "./components/bracket-3v3.js"
+
+Vue.component('login-with-bnet', {
+  template: `<a class="bnet" href="/auth/bnet">Login with Battle.net</a>`
+})
 
 Vue.component('character', {
   data: function() {
     return {
         bracket2v2: { 
-          rating: "<no rating>",
+          rating: "",
           statistics: {
-            season: null,
-            weekly: null
+            season: {
+              lost: "",
+              won: "",
+              played: ""
+            },
+            weekly:  {
+              lost: "",
+              won: "",
+              played: ""
+            }
           }
         },
         bracket3v3: { 
-          rating: "<no rating>",
+          rating: "",
           statistics: {
-            season: null,
-            weekly: null
+            season: {
+              lost: "",
+              won: "",
+              played: ""
+            },
+            weekly:  {
+              lost: "",
+              won: "",
+              played: ""
+            }
           }
         },
       }
@@ -42,27 +62,27 @@ Vue.component('character', {
       })
     })
   },
-  template: '\
+  template: `\
     <tr v-if="character.level === 120">\
-      <td>{{ character.name }}</td>\
+      <td class="name-cell">{{ character.name }}</td>\
       <td>{{ character.realm.name }}</td>\
       <td>{{ character.level }}</td>\
       <bracket-2v2 v-bind:rating="bracket2v2.rating" />\
-      <td class="space-left">{{ bracket2v2.statistics.season !== null && bracket2v2.statistics.season.won }}</td>\
-      <td>{{ bracket2v2.statistics.season !== null && bracket2v2.statistics.season.lost }}</td>\
-      <td>{{ bracket2v2.statistics.season !== null && bracket2v2.statistics.season.played }}</td>\
-      <td class="space-left">{{ bracket2v2.statistics.weekly !== null && bracket2v2.statistics.weekly.won }}</td>\
-      <td>{{ bracket2v2.statistics.weekly !== null && bracket2v2.statistics.weekly.lost }}</td>\
-      <td>{{ bracket2v2.statistics.weekly !== null && bracket2v2.statistics.weekly.played }}</td>\
+      <statistic-cell v-bind:value="bracket2v2.statistics.season.won" v-bind:className="'space-left'" />\
+      <statistic-cell v-bind:value="bracket2v2.statistics.season.lost" />\
+      <statistic-cell v-bind:value="bracket2v2.statistics.season.played" />\
+      <statistic-cell v-bind:value="bracket2v2.statistics.weekly.won" v-bind:className="'space-left'" />\
+      <statistic-cell v-bind:value="bracket2v2.statistics.weekly.lost" />\
+      <statistic-cell v-bind:value="bracket2v2.statistics.weekly.played" />\
       <bracket-2v2 v-bind:rating="bracket3v3.rating" />\
-      <td class="space-left">{{ bracket3v3.statistics.season !== null && bracket3v3.statistics.season.won }}</td>\
-      <td>{{ bracket3v3.statistics.season !== null && bracket3v3.statistics.season.lost }}</td>\
-      <td>{{ bracket3v3.statistics.season !== null && bracket3v3.statistics.season.played }}</td>\
-      <td class="space-left">{{ bracket3v3.statistics.weekly !== null && bracket3v3.statistics.weekly.won }}</td>\
-      <td>{{ bracket3v3.statistics.weekly !== null && bracket3v3.statistics.weekly.lost }}</td>\
-      <td>{{ bracket3v3.statistics.weekly !== null && bracket3v3.statistics.weekly.played }}</td>\
+      <statistic-cell v-bind:value="bracket3v3.statistics.season.won" v-bind:className="'space-left'" />\
+      <statistic-cell v-bind:value="bracket3v3.statistics.season.lost" />\
+      <statistic-cell v-bind:value="bracket3v3.statistics.season.played" />\
+      <statistic-cell v-bind:value="bracket3v3.statistics.weekly.won" v-bind:className="'space-left'" />\
+      <statistic-cell v-bind:value="bracket3v3.statistics.weekly.lost" />\
+      <statistic-cell v-bind:value="bracket3v3.statistics.weekly.played" />\
     </tr>\
-  ',
+  `,
   props: ['character']
 })
 
@@ -84,6 +104,7 @@ var auth = new Vue({
   el: '#auth',
   data: {
     loggedIn: undefined,
+    state: "pending",
     user: undefined
   },
   components: {
@@ -101,8 +122,10 @@ var auth = new Vue({
     fetch("/api/v1/profile").then(res => {
       if (res.status == 404) {
         this.loggedIn = false
+        this.state = "anonymous"
       } else {
         this.loggedIn = true
+        this.state = "authenticated"
         res.json().then(v => this.user = v)
       }
     }).catch(e => console.log(e))

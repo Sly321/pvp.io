@@ -16,6 +16,27 @@
 
         :root {
             --table-bracket-spacing: 25px;
+            --header-height: 100px;
+        }
+        
+        html, body {
+            height: 100%;
+            margin: 0;
+            margin: 0;
+            padding: 0;
+        }
+
+        header, footer, main {
+            display: flex;
+            justify-content: center;
+        }
+
+        header {
+            height: var(--header-height);
+        }
+
+        main {
+            min-height: calc(100% - var(--header-height));
         }
 
         body { 
@@ -23,6 +44,35 @@
             background: #222;
             color: white; 
         }
+
+        /* auth */
+        
+        #auth {
+            display: flex;
+            justify-content: center;
+        }
+
+        .bnet {
+            color: rgba(0,0,0,.87);
+            background: #00aeff;
+            border-color: #66ceff;
+            padding: 16px 32px;
+            font-size: 20px;
+            line-height: 24px;
+            text-shadow: none;
+            box-shadow: 0 1px 5px rgba(0,0,0,.5);
+            user-select: none;
+            outline: 0;
+            border: 1px solid;
+            -webkit-tap-highlight-color: transparent;
+            display: inline-block;
+            vertical-align: middle;
+            box-sizing: border-box;
+            cursor: pointer;    
+            font: 400 16px/20px "Open Sans","Helvetica Neue",Arial,sans-serif;
+        }
+
+        /* table */
 
         table tr td {
             border-bottom: 1px solid grey;
@@ -46,95 +96,128 @@
             border-spacing: 0;
         }
 
-        .bnet {
-            color: rgba(0,0,0,.87);
-            background: #00aeff;
-            border-color: #66ceff;
-            padding: 16px 32px;
-            font-size: 20px;
-            line-height: 24px;
-            text-shadow: none;
-            box-shadow: 0 1px 5px rgba(0,0,0,.5);
-            user-select: none;
-            outline: 0;
-            border: 1px solid;
-            -webkit-tap-highlight-color: transparent;
-            display: inline-block;
-            vertical-align: middle;
-            box-sizing: border-box;
-            cursor: pointer;    
-            font: 400 16px/20px "Open Sans","Helvetica Neue",Arial,sans-serif;
+        .statistic-cell {
+            min-width: 30px;
+            text-align: right;
+        }
+
+        .rating-cell {
+            position: relative;
+        }
+
+        .pvp-rank-img-wrapper {
+            position: absolute;
+            left: 5px;
+        }
+
+        .name-cell {
+            min-width: 110px;
+        }
+
+        .site-footer {
+            color: #898989;
+            background: #222;
+        }
+    </style>
+    <style>
+        .loader {
+          border: 2px solid #555;
+          border-radius: 50%;
+          border-top: 2px solid #f3f3f3;
+          width: 12px;
+          height: 12px;
+          -webkit-animation: spin 1s linear infinite; /* Safari */
+          animation: spin 1s linear infinite;
+        }
+        
+        /* Safari */
+        @-webkit-keyframes spin {
+          0% { -webkit-transform: rotate(0deg); }
+          100% { -webkit-transform: rotate(360deg); }
+        }
+        
+        @keyframes spin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
         }
     </style>
 </head>
 <body>
-    <h1>pvp.io</h1>
-    <div id="auth">
-        <div v-if="loggedIn === undefined">
-            loading...
+    <header>
+        <h1>pvp.io</h1>
+    </header>
+    <main>  
+        <div id="auth">
+            <div v-if="state === 'pending'">    
+                <div class="loader"></div>      
+            </div>
+            <div v-else-if="state === 'anonymous'">
+                <login-with-bnet />
+            </div>
         </div>
-        <div v-else-if="loggedIn === false">
-            <a class="bnet" href="/auth/bnet">Login with Battle.net</a>
+        <div id="characters">
+            <table v-if="characters.length !== 0">
+                <thead>
+                    <tr>
+                        <th colspan="3"></th>
+                        <th class="bracket" colspan="7">
+                            <div>2v2</div>
+                        </th>
+                        <th class="bracket" colspan="7">
+                            <div>3v3</div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th colspan="4"></th>
+                        <th class="bracket" colspan="3">
+                            <div>season</div>
+                        </th>
+                        <th class="bracket" colspan="3">
+                            <div>weekly</div>
+                        </th>
+                        <th />
+                        <th class="bracket" colspan="3">
+                            <div>season</div>
+                        </th>
+                        <th class="bracket" colspan="3">
+                            <div>weekly</div>
+                        </th>
+                    </tr>
+                    <tr>
+                        <th>name</th>
+                        <th>realm</th>
+                        <th>level</th>
+                        <th class="space-left">rating</th>
+                        <th class="space-left">win</th>
+                        <th>lose</th>
+                        <th>played</th>
+                        <th class="space-left">win</th>
+                        <th>lose</th>
+                        <th>played</th>
+                        <th class="space-left">rating</th>
+                        <th class="space-left">win</th>
+                        <th>lose</th>
+                        <th>played</th>
+                        <th class="space-left">win</th>
+                        <th>lose</th>
+                        <th>played</th>
+                    </tr>
+                </thead>
+                <tbody>    
+                    <tr
+                        is="character"
+                        v-for="(character, index) in characters"
+                        v-bind:key="character.id"
+                        v-bind:character="character"
+                    />
+                </tbody>
+            </table>
         </div>
-    </div>
-    <div id="characters">
-        <table v-if="characters.length !== 0">
-            <thead>
-                <tr>
-                    <th colspan="3"></th>
-                    <th class="bracket" colspan="7">
-                        <div>2v2</div>
-                    </th>
-                    <th class="bracket" colspan="7">
-                        <div>3v3</div>
-                    </th>
-                </tr>
-                <tr>
-                    <th colspan="4"></th>
-                    <th class="bracket" colspan="3">
-                        <div>season</div>
-                    </th>
-                    <th class="bracket" colspan="3">
-                        <div>weekly</div>
-                    </th>
-                    <th />
-                    <th class="bracket" colspan="3">
-                        <div>season</div>
-                    </th>
-                    <th class="bracket" colspan="3">
-                        <div>weekly</div>
-                    </th>
-                </tr>
-                <tr>
-                    <th>name</th>
-                    <th>realm</th>
-                    <th>level</th>
-                    <th class="space-left">rating</th>
-                    <th class="space-left">win</th>
-                    <th>lose</th>
-                    <th>played</th>
-                    <th class="space-left">win</th>
-                    <th>lose</th>
-                    <th>played</th>
-                    <th class="space-left">rating</th>
-                    <th class="space-left">win</th>
-                    <th>lose</th>
-                    <th>played</th>
-                    <th class="space-left">win</th>
-                    <th>lose</th>
-                    <th>played</th>
-                </tr>
-            </thead>
-            <tbody>    
-                <tr
-                    is="character"
-                    v-for="(character, index) in characters"
-                    v-bind:key="character.id"
-                    v-bind:character="character"
-                />
-            </tbody>
-        </table>
-    </div>
+    </main>
     <script type="module" src="js/index.js"></script>
+
+    <footer class="site-footer">
+        <p class="copyright">© Copyright 2020 Sven Liebig. All rights reserved.</p>
+    </footer>
 </body>
 </html>
