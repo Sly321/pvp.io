@@ -6,6 +6,7 @@
     <link rel="icon" type="image/png" href="./assets/pvp-rang-7.png" />
     <title>pvp.io</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/wow-classes.css">
     <style>
         @font-face {
             font-family: 'open_sans';
@@ -114,6 +115,11 @@
             min-width: 110px;
         }
 
+        .name-cell .character-realm {
+            color: #898989;
+            font-size: 10px;
+        }
+
         .site-footer {
             color: #898989;
             background: #222;
@@ -159,7 +165,7 @@
             <table v-if="characters.length !== 0">
                 <thead>
                     <tr>
-                        <th colspan="3"></th>
+                        <th colspan="1"></th>
                         <th class="bracket" colspan="7">
                             <div>2v2</div>
                         </th>
@@ -168,7 +174,7 @@
                         </th>
                     </tr>
                     <tr>
-                        <th colspan="4"></th>
+                        <th colspan="2"></th>
                         <th class="bracket" colspan="3">
                             <div>season</div>
                         </th>
@@ -185,8 +191,8 @@
                     </tr>
                     <tr>
                         <th>name</th>
-                        <th>realm</th>
-                        <th>level</th>
+                        <!-- <th>realm</th> -->
+                        <!-- <th>level</th> -->
                         <th class="space-left">rating</th>
                         <th class="space-left">win</th>
                         <th>lose</th>

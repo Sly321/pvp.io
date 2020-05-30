@@ -1,0 +1,62 @@
+:root {
+    --class-color-death-knight: #C41F3B;
+    --class-color-demon-hunter: #A330C9;
+    --class-color-druid: #FF7D0A;
+    --class-color-hunter: #A9D271;
+    --class-color-mage: #40C7EB;
+    --class-color-monk: #00FF96;
+    --class-color-paladin: #F58CBA;
+    --class-color-priest: #FFFFFF;
+    --class-color-rogue: #FFF569;
+    --class-color-shaman: #0070DE;
+    --class-color-warlock:	#8787ED;
+    --class-color-warrior: #C79C6E;
+}
+
+span.class-death-knight {
+    color: var(--class-color-death-knight)
+}
+
+span.class-demon-hunter {
+    color: var(--class-color-demon-hunter)
+}
+
+span.class-druid {
+    color: var(--class-color-druid)
+}
+
+span.class-hunter {
+    color: var(--class-color-hunter)
+}
+
+span.class-mage {
+    color: var(--class-color-mage)
+}
+
+span.class-monk {
+    color: var(--class-color-monk)
+}
+
+span.class-paladin {
+    color: var(--class-color-paladin)
+}
+
+span.class-priest {
+    color: var(--class-color-priest)
+}
+
+span.class-rogue {
+    color: var(--class-color-rogue)
+}
+
+span.class-shaman {
+    color: var(--class-color-shaman)
+}
+
+span.class-warlock {
+    color: var(--class-color-warlock)
+}
+
+span.class-warrior {
+    color: var(--class-color-warrior)
+}

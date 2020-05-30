@@ -64,9 +64,13 @@ Vue.component('character', {
   },
   template: `\
     <tr v-if="character.level === 120">\
-      <td class="name-cell">{{ character.name }}</td>\
-      <td>{{ character.realm.name }}</td>\
-      <td>{{ character.level }}</td>\
+      <td class="name-cell">
+        <div class="character-name">
+          <span v-bind:class="'class-' + character.playable_class.name.toLowerCase().replace(' ', '-')">{{ character.name }}</span>
+        </div>
+        <div class="character-realm">{{ character.realm.name }}</div>
+        </div>
+      </td>
       <bracket-2v2 v-bind:rating="bracket2v2.rating" />\
       <statistic-cell v-bind:value="bracket2v2.statistics.season.won" v-bind:className="'space-left'" />\
       <statistic-cell v-bind:value="bracket2v2.statistics.season.lost" />\
