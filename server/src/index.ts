@@ -1,11 +1,13 @@
-var express = require('express');
-var passport = require('passport');
-const path = require("path")
+import express from 'express'
+import { AddressInfo } from 'net';
+import passport from 'passport';
+import path from "path";
 
 var cookieParser = require('cookie-parser');
 var session = require('express-session');
 
 var BnetStrategy = require('passport-bnet').Strategy;
+
 var BNET_ID = process.env.BNET_ID;
 var BNET_SECRET = process.env.BNET_SECRET;
 
@@ -24,7 +26,7 @@ passport.use(
       clientSecret: BNET_SECRET,
       region: "eu",
       scope: "wow.profile",
-      callbackURL: "http://localhost:3000/auth/bnet/callback" },
+      callbackURL: `${process.env.BASE_URL}/auth/bnet/callback` },
     function(accessToken, refreshToken, profile, done) {
       process.nextTick(function () {
         return done(null, profile);
@@ -45,17 +47,16 @@ app.use(session({ secret: 'blizzard',
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.use(require("./api/v1/characters"))
-app.use(require("./api/v1/rating"))
+import character from "./api/v1/characters"
+app.use(character as any)
+import ratings from "./api/v1/rating"
+app.use(ratings as any)
 
-app.get('/auth/bnet',
-        passport.authenticate('bnet'));
+app.get('/auth/bnet', passport.authenticate('bnet'));
 
-app.get('/auth/bnet/callback',
-        passport.authenticate('bnet', { failureRedirect: '/' }),
-        function(req, res){
-          res.redirect('/');
-        });
+app.get('/auth/bnet/callback', passport.authenticate('bnet', { failureRedirect: '/' }), function(req, res){
+  res.redirect('/');
+});
 
 app.get("/api/v1/profile", function(req, res) {
     if (req.isAuthenticated()) {
@@ -72,6 +73,6 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-var server = app.listen(3000, function() {
-  console.log('Listening on port %d', server.address().port);
+var server = app.listen(process.env.PORT || 3000, function() {
+  console.log('Listening on port %d', (server.address()! as AddressInfo).port );
 });
