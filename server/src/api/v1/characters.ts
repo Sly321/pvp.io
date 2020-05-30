@@ -19,7 +19,7 @@ characters.get("/api/v1/characters", async function(req, res) {
     if (charactersReq.status === 200) {
         const profile = await charactersReq.json()
         const account = profile.wow_accounts[0]
-        const characters = account.characters.filter(char => char.realm.name === "Blackrock")
+        const characters = account.characters.filter(char => char.level === 120)
         return res.send(characters)
     }
 
