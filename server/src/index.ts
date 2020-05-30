@@ -48,9 +48,9 @@ app.use(passport.initialize());
 app.use(passport.session());
 
 import character from "./api/v1/characters"
-app.use(character as any)
+app.use(character)
 import ratings from "./api/v1/rating"
-app.use(ratings as any)
+app.use(ratings)
 
 app.get('/auth/bnet', passport.authenticate('bnet'));
 
