@@ -47,6 +47,7 @@ app.use(session({ secret: 'blizzard',
 app.use(passport.initialize());
 app.use(passport.session());
 
+// todo dynamic load / import by readdir and async import
 import character from "./api/v1/characters"
 app.use(character)
 import ratings from "./api/v1/rating"
