@@ -75,7 +75,6 @@ const characters = new Vue({
     fetch("/api/v1/characters").then(res => {
       res.json().then(chars => {
         this.characters = chars
-        console.log(chars)
       })
     })
   },
