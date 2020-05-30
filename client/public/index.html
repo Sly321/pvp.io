@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>pvp.io</title>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <style>
+        body { background: #222;
+        color: white; }
+
+        .bnet {
+            color: rgba(0,0,0,.87);
+            background: #00aeff;
+            border-color: #66ceff;
+            padding: 16px 32px;
+            font-size: 20px;
+            line-height: 24px;
+            text-shadow: none;
+            box-shadow: 0 1px 5px rgba(0,0,0,.5);
+            user-select: none;
+            outline: 0;
+            border: 1px solid;
+            -webkit-tap-highlight-color: transparent;
+            display: inline-block;
+            vertical-align: middle;
+            box-sizing: border-box;
+            cursor: pointer;    
+            font: 400 16px/20px "Open Sans","Helvetica Neue",Arial,sans-serif;
+        }
+    </style>
+</head>
+<body>
+    <h1>pvp.io</h1>
+    <div id="auth">
+        <div v-if="loggedIn === undefined">
+            loading...
+        </div>
+        <div v-else-if="loggedIn === false">
+            <a class="bnet" href="/auth/bnet">Login with Battle.net</a>
+        </div>
+        <!-- <div v-else-if="loggedIn === true"> -->
+        <!-- </div> -->
+        <!-- <button v-on:click="reverseMessage">Reverse Message</button> -->
+        <!-- {{ user }} -->
+    </div>
+    <div id="characters">
+        <table v-if="characters.length !== 0">
+            <thead>
+                <th>name</th>
+                <th>realm</th>
+                <th>level</th>
+                <th>2v2</th>
+                <th>3v3</th>
+            </thead>
+            <tbody>    
+                <tr
+                is="character"
+                v-for="(character, index) in characters"
+                v-bind:key="character.id"
+                v-bind:character="character"
+                ></tr>
+            </tbody>
+        </table>
+    </div>
+    <script type="module" src="js/index.js"></script>
+</body>
+</html>
