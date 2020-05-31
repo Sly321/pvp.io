@@ -25,4 +25,3 @@ rating.get<{}, any, any, RatingQueryParams>("/api/v1/rating", async function(req
 })
 
 export default rating
-

@@ -109,6 +109,11 @@ const HORDE: BlizzardApi.Faction = {
     name: "Horde"
 }
 
+const ALLIANCE: BlizzardApi.Faction = { 
+    type: "ALLIANCE",
+    name: "Alliance"
+}
+
 const MALE: BlizzardApi.Gender = {
     type: "MALE",
     name: "Male"
@@ -127,34 +132,163 @@ function createStats(won: number, lost: number) {
     }
 }
 
-const Guldan: BlizzardApi.CharacterWithRating = {
-    name: "Guldan",
-    id: 1,
-    level: 120,
-    playable_class: {
-        id: 9,
-        name: "Warlock"
-    },
-    realm: {
-        name: "Blackrock",
-        slug: "blackrock",
+function createRealm(name: string): BlizzardApi.Realm {
+    return {
+        name,
+        slug: name.toLocaleLowerCase(),
         id: 1
-    },
-    playable_race: ORC,
-    faction: HORDE,
-    gender: MALE,
+    }
+}
+
+const Guldan = createCwr("Guldan", HORDE, "Warlock", {
     bracket2v2: {
-        rating: 2541,
+        rating: 2841,
         season_match_statistics: createStats(140, 70),
         weekly_match_statistics: createStats(20, 10)
     },
     bracket3v3: {
-        rating: 2301,
+        rating: 2601,
         season_match_statistics: createStats(82, 57),
         weekly_match_statistics: createStats(12, 5)
+    }
+})
+
+const Valeera = createCwr("Valeera", HORDE, "Rogue", {
+    bracket2v2: {
+        rating: 2341,
+        season_match_statistics: createStats(132, 89),
+        weekly_match_statistics: createStats(19, 4)
+    },
+    bracket3v3: {
+        rating: 2601,
+        season_match_statistics: createStats(122, 40),
+        weekly_match_statistics: createStats(0, 0)
+    }
+})
+
+const Uther = createCwr("Uther", ALLIANCE, "Paladin", {
+    bracket2v2: {
+        rating: 2132,
+        season_match_statistics: createStats(145, 59),
+        weekly_match_statistics: createStats(51, 19)
+    },
+    bracket3v3: {
+        rating: 1923,
+        season_match_statistics: createStats(132, 89),
+        weekly_match_statistics: createStats(8, 12)
+    }
+})
+
+const Arthas = createCwr("Arthas", ALLIANCE, "Death Knight", {
+    bracket2v2: {
+        rating: 1902,
+        season_match_statistics: createStats(140, 70),
+        weekly_match_statistics: createStats(20, 10)
+    },
+    bracket3v3: {
+        rating: 2451,
+        season_match_statistics: createStats(82, 57),
+        weekly_match_statistics: createStats(12, 5)
+    }
+})
+
+const Illidan = createCwr("Illidan", HORDE, "Demon Hunter", {
+    bracket2v2: {
+        rating: 1783,
+        season_match_statistics: createStats(140, 70),
+        weekly_match_statistics: createStats(20, 10)
+    },
+    bracket3v3: {
+        rating: 1502,
+        season_match_statistics: createStats(82, 57),
+        weekly_match_statistics: createStats(12, 5)
+    }
+})
+
+const Thrall = createCwr("Thrall", HORDE, "Shaman", {
+    bracket2v2: {
+        rating: 1654,
+        season_match_statistics: createStats(140, 70),
+        weekly_match_statistics: createStats(20, 10)
+    },
+    bracket3v3: {
+        rating: 1452,
+        season_match_statistics: createStats(82, 57),
+        weekly_match_statistics: createStats(12, 5)
+    }
+})
+
+const Rexxar = createCwr("Rexxar", HORDE, "Hunter", {
+    bracket2v2: {
+        rating: 1494,
+        season_match_statistics: createStats(30, 32),
+        weekly_match_statistics: createStats(0, 0)
+    },
+    bracket3v3: {
+        rating: 1653,
+        season_match_statistics: createStats(43, 38),
+        weekly_match_statistics: createStats(2, 1)
+    }
+})
+
+const Jaina = createCwr("Jaina", ALLIANCE, "Mage", {
+    bracket2v2: {
+        rating: 2694,
+        season_match_statistics: createStats(154, 64),
+        weekly_match_statistics: createStats(4, 2)
+    },
+    bracket3v3: {
+        rating: 2452,
+        season_match_statistics: createStats(143, 51),
+        weekly_match_statistics: createStats(12, 5)
+    }
+})
+
+const Malfurion = createCwr("Malfurion", ALLIANCE, "Druid", {
+    bracket2v2: {
+        rating: 1240,
+        season_match_statistics: createStats(12, 2),
+        weekly_match_statistics: createStats(0, 0)
+    },
+    bracket3v3: {
+        rating: 1420,
+        season_match_statistics: createStats(16, 4),
+        weekly_match_statistics: createStats(2, 1)
+    }
+})
+
+const Tyrande = createCwr("Tyrande", ALLIANCE, "Priest", {
+    bracket2v2: {
+        rating: 2342,
+        season_match_statistics: createStats(63, 2),
+        weekly_match_statistics: createStats(31, 1)
+    },
+    bracket3v3: {
+        rating: 2214,
+        season_match_statistics: createStats(52, 4),
+        weekly_match_statistics: createStats(12, 1)
+    }
+})
+
+
+function createCwr(name: string, faction: BlizzardApi.Faction, playableClass: string, rating: { bracket2v2: BlizzardApi.Rating, bracket3v3: BlizzardApi.Rating }, gender: BlizzardApi.Gender = MALE, playable_race: BlizzardApi.Race = ORC): BlizzardApi.CharacterWithRating {
+    return {
+        name,
+        id: 1,
+        level: 120,
+        playable_class: {
+            id: 9,
+            name: playableClass
+        },
+        realm: createRealm("Blackrock"),
+        playable_race,
+        faction,
+        gender,
+        bracket2v2: rating.bracket2v2,
+        bracket3v3: rating.bracket3v3
     }
 }
 
 export const ShowcaseData: Array<BlizzardApi.CharacterWithRating> = [
-    Guldan
+    Guldan, Valeera, Uther, Arthas, Illidan, Thrall, Rexxar, Jaina, Malfurion, Tyrande
 ]

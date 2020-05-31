@@ -17,23 +17,37 @@
         }
 
         .bnet {
-            color: rgba(0,0,0,.87);
-            background: #00aeff;
-            border-color: #66ceff;
+            color: #fff;
+            background-color: #007bc6;
+            border: solid 1px #79d4ff;
+
             padding: 16px 32px;
             font-size: 20px;
             line-height: 24px;
-            text-shadow: none;
-            box-shadow: 0 1px 5px rgba(0,0,0,.5);
+
+            /* text-shadow: none;
+            box-shadow: 0 1px 5px rgba(0,0,0,.5); */
             user-select: none;
             outline: 0;
-            border: 1px solid;
             -webkit-tap-highlight-color: transparent;
             display: inline-block;
             vertical-align: middle;
             box-sizing: border-box;
             cursor: pointer;    
             font: 400 16px/20px "Open Sans","Helvetica Neue",Arial,sans-serif;
+
+            text-decoration: none;
+            transition: color 200ms,background-color 200ms,border-color 200ms;
+        }
+
+        .bnet:hover {
+            background-color: #006fb2;
+            border: solid 1px #00aeff;
+        }
+
+        .bnet:active {
+            background-color: #00629e;
+            border: solid 1px #007bc6;
         }
 
         /* table */
