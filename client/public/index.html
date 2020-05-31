@@ -111,64 +111,11 @@
                 <loading-spinner />
             </div>
             <div v-else-if="state === 'anonymous'">
-                <login-with-bnet />
+                <login-page />
             </div>
-        </div>
-        <div id="characters">
-            <table v-if="characters.length !== 0">
-                <thead>
-                    <tr>
-                        <th colspan="1"></th>
-                        <th class="bracket space-right" colspan="7">
-                            <div>2v2</div>
-                        </th>
-                        <th class="bracket" colspan="7">
-                            <div>3v3</div>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th colspan="2"></th>
-                        <th class="bracket" colspan="3">
-                            <div>season</div>
-                        </th>
-                        <th class="bracket space-right" colspan="3">
-                            <div>weekly</div>
-                        </th>
-                        <th />
-                        <th class="bracket" colspan="3">
-                            <div>season</div>
-                        </th>
-                        <th class="bracket" colspan="3">
-                            <div>weekly</div>
-                        </th>
-                    </tr>
-                    <tr>
-                        <th>name</th>
-                        <th class="space-left">rating</th>
-                        <th class="space-left">win</th>
-                        <th>lose</th>
-                        <th>played</th>
-                        <th class="space-left">win</th>
-                        <th>lose</th>
-                        <th class="space-right">played</th>
-                        <th class="space-left">rating</th>
-                        <th class="space-left">win</th>
-                        <th>lose</th>
-                        <th>played</th>
-                        <th class="space-left">win</th>
-                        <th>lose</th>
-                        <th>played</th>
-                    </tr>
-                </thead>
-                <tbody>    
-                    <tr
-                        is="character"
-                        v-for="(character, index) in characters"
-                        v-bind:key="character.id"
-                        v-bind:character="character"
-                    />
-                </tbody>
-            </table>
+            <div v-else-if="state === 'authenticated'">
+                <characters-overview />
+            </div>
         </div>
     </main>
     <script type="module" src="js/index.js"></script>

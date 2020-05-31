@@ -2,59 +2,9 @@ import "./components/statistic-cell.js"
 import "./components/loading-spinner.js"
 import "./components/wowclass-span.js"
 import "./components/rating.js"
-
-Vue.component('login-with-bnet', {
-  template: `<section class="container mt-5">
-  <h2>What is this?</h2>
-  <div class="split-2 description-container mt-3">
-    <p class="description">
-    I created this because I wanted an overview for my characters and their ratings.
-    Since I found it pretty useful, i decided to publish it for others too. The client
-    uses the <a href="https://develop.battle.net/">official Blizzard API</a> to fetch your characters (much like <a href="https://raider.io">raider.io</a> does) and give you an overview for all your level 120 characters and their arena raiting and statistics. This is very much under construction! So if you have ideas, problems or concerns feel free to contact me ingame (Slyox#2863). I hope you like it!
-    </p>
-    <img alt="showcase of the application" src="/assets/showcase.png" />
-  </div>
-  <div class="login-btn-container">
-    <a class="bnet" href="/auth/bnet">Login with Battle.net</a>
-  </div>
-  </section>`
-})
+import "./components/login-page.js"
 
 Vue.component('character', {
-  data: function() {
-    return {
-        bracket2v2: { 
-          rating: "",
-          statistics: {
-            season: {
-              lost: "",
-              won: "",
-              played: ""
-            },
-            weekly:  {
-              lost: "",
-              won: "",
-              played: ""
-            }
-          }
-        },
-        bracket3v3: { 
-          rating: "",
-          statistics: {
-            season: {
-              lost: "",
-              won: "",
-              played: ""
-            },
-            weekly:  {
-              lost: "",
-              won: "",
-              played: ""
-            }
-          }
-        },
-      }
-  },
   template: `\
     <tr v-if="character.level === 120">\
       <td class="name-cell">
@@ -83,10 +33,9 @@ Vue.component('character', {
   props: ['character']
 })
 
-const characters = new Vue({
-  el: '#characters',
-  data: {
-    characters: [],
+Vue.component('characters-overview', {
+  data: function() {
+    return { characters: [] }
   },
   created: function() {
     fetch("/api/v1/characters/ratings").then(res => {
@@ -96,6 +45,64 @@ const characters = new Vue({
       })
     })
   },
+  template: `
+  <div id="characters">
+      <table v-if="characters.length !== 0">
+          <thead>
+              <tr>
+                  <th colspan="1"></th>
+                  <th class="bracket space-right" colspan="7">
+                      <div>2v2</div>
+                  </th>
+                  <th class="bracket" colspan="7">
+                      <div>3v3</div>
+                  </th>
+              </tr>
+              <tr>
+                  <th colspan="2"></th>
+                  <th class="bracket" colspan="3">
+                      <div>season</div>
+                  </th>
+                  <th class="bracket space-right" colspan="3">
+                      <div>weekly</div>
+                  </th>
+                  <th />
+                  <th class="bracket" colspan="3">
+                      <div>season</div>
+                  </th>
+                  <th class="bracket" colspan="3">
+                      <div>weekly</div>
+                  </th>
+              </tr>
+              <tr>
+                  <th>name</th>
+                  <th class="space-left">rating</th>
+                  <th class="space-left">win</th>
+                  <th>lose</th>
+                  <th>played</th>
+                  <th class="space-left">win</th>
+                  <th>lose</th>
+                  <th class="space-right">played</th>
+                  <th class="space-left">rating</th>
+                  <th class="space-left">win</th>
+                  <th>lose</th>
+                  <th>played</th>
+                  <th class="space-left">win</th>
+                  <th>lose</th>
+                  <th>played</th>
+              </tr>
+          </thead>
+          <tbody>    
+              <tr
+                  is="character"
+                  v-for="(character, index) in characters"
+                  v-bind:key="character.id"
+                  v-bind:character="character"
+              />
+          </tbody>
+      </table>
+      <loading-spinner v-else />
+  </div>`
 })
 
 var auth = new Vue({
@@ -116,10 +123,5 @@ var auth = new Vue({
         res.json().then(v => this.user = v)
       }
     }).catch(e => console.log(e))
-  },
-  methods: {
-    reverseMessage: function () {
-      this.message = this.message.split('').reverse().join('')
-    }
   }
 })
