@@ -1,6 +1,7 @@
 import "./components/statistic-cell.js"
-import "./components/bracket-2v2.js"
-import "./components/bracket-3v3.js"
+import "./components/loading-spinner.js"
+import "./components/wowclass-span.js"
+import "./components/rating.js"
 
 Vue.component('login-with-bnet', {
   template: `<a class="bnet" href="/auth/bnet">Login with Battle.net</a>`
@@ -66,19 +67,19 @@ Vue.component('character', {
     <tr v-if="character.level === 120">\
       <td class="name-cell">
         <div class="character-name">
-          <span v-bind:class="'class-' + character.playable_class.name.toLowerCase().replace(' ', '-')">{{ character.name }}</span>
+          <wowclass-span v-bind:wowclass="character.playable_class.name">{{ character.name }}</wowclass-span>
         </div>
         <div class="character-realm">{{ character.realm.name }}</div>
         </div>
       </td>
-      <bracket-2v2 v-bind:rating="bracket2v2.rating" />\
+      <rating v-bind:rating="bracket2v2.rating" />\
       <statistic-cell v-bind:value="bracket2v2.statistics.season.won" v-bind:className="'space-left'" />\
       <statistic-cell v-bind:value="bracket2v2.statistics.season.lost" />\
       <statistic-cell v-bind:value="bracket2v2.statistics.season.played" />\
       <statistic-cell v-bind:value="bracket2v2.statistics.weekly.won" v-bind:className="'space-left'" />\
       <statistic-cell v-bind:value="bracket2v2.statistics.weekly.lost" />\
-      <statistic-cell v-bind:value="bracket2v2.statistics.weekly.played" />\
-      <bracket-2v2 v-bind:rating="bracket3v3.rating" />\
+      <statistic-cell v-bind:value="bracket2v2.statistics.weekly.played" v-bind:className="'space-right'" />\
+      <rating v-bind:rating="bracket3v3.rating" />\
       <statistic-cell v-bind:value="bracket3v3.statistics.season.won" v-bind:className="'space-left'" />\
       <statistic-cell v-bind:value="bracket3v3.statistics.season.lost" />\
       <statistic-cell v-bind:value="bracket3v3.statistics.season.played" />\

@@ -1,0 +1,41 @@
+:root {
+    --header-height: 100px;
+}
+
+@font-face {
+    font-family: 'open_sans';
+    src: url('../assets/fonts/Open_Sans/OpenSans-Regular.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
+    margin: 0;
+    padding: 0;
+}
+
+header, footer, main {
+    display: flex;
+    justify-content: center;
+}
+
+header {
+    height: var(--header-height);
+}
+
+main {
+    min-height: calc(100% - var(--header-height));
+}
+
+body { 
+    font-family: open_sans;
+    background: #222;
+    color: white; 
+}
+
+.site-footer {
+    color: #898989;
+    background: #222;
+}
