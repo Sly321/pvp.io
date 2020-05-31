@@ -1,29 +1,24 @@
 import express from "express"
-import fetch from "node-fetch"
+import { BlizzardApiAdapter } from "../../data/adapter/blizzard-api"
 
 const characters = express()
-
-const url = "https://eu.api.blizzard.com/"
-
-async function fetchCharacters(token)  {
-    return fetch(`${url}profile/user/wow?namespace=profile-eu&locale=en_US&access_token=${token}`)
-}
 
 characters.get("/api/v1/characters", async function(req, res) {
     if (!req.isAuthenticated()) {
         return res.sendStatus(401)
     }
 
-    const charactersReq = await fetchCharacters((req.user as any).token)
-
-    if (charactersReq.status === 200) {
-        const profile = await charactersReq.json()
-        const account = profile.wow_accounts[0]
-        const characters = account.characters.filter(char => char.level === 120)
-        return res.send(characters)
+    try {
+        const characters = await BlizzardApiAdapter.fetchAccountCharacter({ 
+            token: (req.user as any).token, 
+            filter: (c) => c.level === 120 
+        })
+        res.send(characters)
+    } catch(e) {
+        console.log("Error in /api/v1/characters")
+        console.error(e)   
+        res.sendStatus(500)
     }
-
-    res.sendStatus(500)
 })
 
 export default characters

@@ -56,7 +56,7 @@ app.use(passport.session());
 import glob from "glob"
 import { resolve } from "path"
 
-glob.sync(resolve(__dirname, "api", "v1", "*.ts")).forEach(n => {
+glob.sync(resolve(__dirname, "api", "v1", "**", "*.ts")).forEach(n => {
   console.log(`Adding handler from ${n}`)
   app.use(require(n)["default"])
 })

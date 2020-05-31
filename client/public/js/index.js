@@ -42,27 +42,6 @@ Vue.component('character', {
         },
       }
   },
-  mounted: function() {
-    const realmSlug = this.character.realm.slug
-    const name = this.character.name
-    fetch(`/api/v1/rating?bracket=2v2&name=${name.toLowerCase()}&realmSlug=${realmSlug}`).then(res => {
-      res.json().then(rating => {
-        this.bracket2v2.rating = rating.rating
-        this.bracket2v2.statistics.season = rating.season_match_statistics
-        this.bracket2v2.statistics.weekly = rating.weekly_match_statistics
-      }).catch(() => {
-      })
-    })
-
-    fetch(`/api/v1/rating?bracket=3v3&name=${name.toLowerCase()}&realmSlug=${realmSlug}`).then(res => {
-      res.json().then(rating => {
-        this.bracket3v3.rating = rating.rating
-        this.bracket3v3.statistics.season = rating.season_match_statistics
-        this.bracket3v3.statistics.weekly = rating.weekly_match_statistics
-      }).catch(() => {
-      })
-    })
-  },
   template: `\
     <tr v-if="character.level === 120">\
       <td class="name-cell">
@@ -72,20 +51,20 @@ Vue.component('character', {
         <div class="character-realm">{{ character.realm.name }}</div>
         </div>
       </td>
-      <rating v-bind:rating="bracket2v2.rating" />\
-      <statistic-cell v-bind:value="bracket2v2.statistics.season.won" v-bind:className="'space-left'" />\
-      <statistic-cell v-bind:value="bracket2v2.statistics.season.lost" />\
-      <statistic-cell v-bind:value="bracket2v2.statistics.season.played" />\
-      <statistic-cell v-bind:value="bracket2v2.statistics.weekly.won" v-bind:className="'space-left'" />\
-      <statistic-cell v-bind:value="bracket2v2.statistics.weekly.lost" />\
-      <statistic-cell v-bind:value="bracket2v2.statistics.weekly.played" v-bind:className="'space-right'" />\
-      <rating v-bind:rating="bracket3v3.rating" />\
-      <statistic-cell v-bind:value="bracket3v3.statistics.season.won" v-bind:className="'space-left'" />\
-      <statistic-cell v-bind:value="bracket3v3.statistics.season.lost" />\
-      <statistic-cell v-bind:value="bracket3v3.statistics.season.played" />\
-      <statistic-cell v-bind:value="bracket3v3.statistics.weekly.won" v-bind:className="'space-left'" />\
-      <statistic-cell v-bind:value="bracket3v3.statistics.weekly.lost" />\
-      <statistic-cell v-bind:value="bracket3v3.statistics.weekly.played" />\
+      <rating v-bind:rating="character.bracket2v2.rating" />\
+      <statistic-cell v-bind:value="character.bracket2v2.season_match_statistics.won" v-bind:className="'space-left'" />\
+      <statistic-cell v-bind:value="character.bracket2v2.season_match_statistics.lost" />\
+      <statistic-cell v-bind:value="character.bracket2v2.season_match_statistics.played" />\
+      <statistic-cell v-bind:value="character.bracket2v2.weekly_match_statistics.won" v-bind:className="'space-left'" />\
+      <statistic-cell v-bind:value="character.bracket2v2.weekly_match_statistics.lost" />\
+      <statistic-cell v-bind:value="character.bracket2v2.weekly_match_statistics.played" v-bind:className="'space-right'" />\
+      <rating v-bind:rating="character.bracket3v3.rating" />\
+      <statistic-cell v-bind:value="character.bracket3v3.season_match_statistics.won" v-bind:className="'space-left'" />\
+      <statistic-cell v-bind:value="character.bracket3v3.season_match_statistics.lost" />\
+      <statistic-cell v-bind:value="character.bracket3v3.season_match_statistics.played" />\
+      <statistic-cell v-bind:value="character.bracket3v3.weekly_match_statistics.won" v-bind:className="'space-left'" />\
+      <statistic-cell v-bind:value="character.bracket3v3.weekly_match_statistics.lost" />\
+      <statistic-cell v-bind:value="character.bracket3v3.weekly_match_statistics.played" />\
     </tr>\
   `,
   props: ['character']
@@ -97,9 +76,10 @@ const characters = new Vue({
     characters: [],
   },
   created: function() {
-    fetch("/api/v1/characters").then(res => {
-      res.json().then(chars => {
-        this.characters = chars
+    fetch("/api/v1/characters/ratings").then(res => {
+      res.json().then(body => {
+        console.log(body)
+        this.characters = body.characters
       })
     })
   },
@@ -111,17 +91,6 @@ var auth = new Vue({
     loggedIn: undefined,
     state: "pending",
     user: undefined
-  },
-  components: {
-    "match-statistic": {
-      template: `<div>
-        <td>{{ statistic.won }}</td>
-        <td>{{ statistic.lost }}</td>
-        <td>{{ statistic.played }}</td>
-      </div>
-      `,
-      props: ['statistic']
-    }
   },
   created: function() {
     fetch("/api/v1/profile").then(res => {
