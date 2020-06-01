@@ -1,6 +1,7 @@
 import express from "express"
 import { BlizzardApiAdapter } from "../../../data/adapter/blizzard-api"
 import { BlizzardApi } from "../../../data/port/blizzard-api-port";
+import { Log } from "../../../utils/log";
 
 const charactersRatings = express()
 
@@ -18,6 +19,7 @@ type Meta = {
 }
 
 function createMeta(characters: Array<BlizzardApi.CharacterWithRating>): Meta {
+    Log.info("create meta")
     const meta: Meta = {
         season: {
             bracket2v2: {
@@ -43,15 +45,22 @@ function createMeta(characters: Array<BlizzardApi.CharacterWithRating>): Meta {
         }
     })
 
+    Log.info("return meta")
     return meta
 }
 
 charactersRatings.get("/api/v1/characters/ratings", async function(req, res) {
+    Log.http("/api/v1/characters/ratings", "requested")
+
     if (!req.isAuthenticated()) {
+        Log.http("/api/v1/characters/ratings", "send", 401)
         return res.sendStatus(401)
     }
 
+    Log.debug(req.user)
+
     if (process.env.MOCK_DATA) {
+        Log.debug("process.env.MOCK_DATA", process.env.MOCK_DATA)
         const meta = createMeta(ShowcaseData)
         return res.send({
             characters: ShowcaseData,
@@ -91,13 +100,18 @@ charactersRatings.get("/api/v1/characters/ratings", async function(req, res) {
 
         const meta = createMeta(charactersWithRating)
 
-        res.send({
+        Log.http("/api/v1/characters/ratings", "send", 200)
+        
+        const result = {
             characters: charactersWithRating,
             meta
-        })
+        };
+
+        Log.debug(result)
+        res.send(result)
     } catch(e) {
-        console.log("Error in /api/v1/characters/ratings")
-        console.error(e)   
+        Log.error(e)
+        Log.http("/api/v1/characters/ratings", "send", 500)
         res.sendStatus(500)
     }
 })

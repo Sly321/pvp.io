@@ -10,7 +10,8 @@
     "glob": "^7.1.6",
     "node-fetch": "^2.6.0",
     "passport": "^0.4.1",
-    "passport-bnet": "^2.0.0"
+    "passport-bnet": "^2.0.0",
+    "winston": "^3.2.1"
   },
   "scripts": {
     "start": "env-cmd ts-node src/index.ts"
