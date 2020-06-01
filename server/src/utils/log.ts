@@ -13,7 +13,7 @@ const logger = createLogger({
 })
 
 function createFileTransports() {
-    currentDateString = new Date().toLocaleDateString("de-DE", { year: "numeric", month: "2-digit", day: "2-digit"})
+    currentDateString =  new Date().toISOString().split("T")[0]
     return [
         new transports.File({ filename: `logs/${currentDateString}-error.log`, level: 'error', format: combine(format.json(), timestamp())  }),
         new transports.File({ filename: `logs/${currentDateString}-debug.log`, level: 'debug', format: combine(format.json(), timestamp())  }),
@@ -40,7 +40,7 @@ function assignTransports() {
 }
 
 function log(level: "info" | "http" |"debug" | "error", ...args: Array<any>) {
-    if (currentDateString !== new Date().toLocaleDateString("de-DE", { year: "numeric", month: "2-digit", day: "2-digit"})) {
+    if (currentDateString !==  new Date().toISOString().split("T")[0]) {
         assignTransports()
     }
 
